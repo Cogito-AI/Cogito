@@ -1,3 +1,5 @@
+run pip install -r requirements.txt to install all dependecies
+
 # Cogito
 Scraper : Scrapes puzzle data whenever requested
  NOTE: 1- Firefox should be installed to run scrapper
