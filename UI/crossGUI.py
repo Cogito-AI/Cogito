@@ -1,5 +1,5 @@
 import argparse
-
+from Service import saveAndRead
 from tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM, Listbox
 
 BOARDS = ['debug', 'n00b', 'l33t', 'error']  # Available crossword boards
@@ -149,17 +149,28 @@ class CrosswordUI(Frame):
         self.game.start()
         self.__draw_puzzle()
 
+
     def __display_old_puzzles(self):
+
+        def onselect(evt):
+            # Note here that Tkinter passes an event object to onselect()
+            w = evt.widget
+            index = int(w.curselection()[0])
+            value = w.get(index)
+            ##do some work
+            top.destroy()
+
+
+
         top = Tk()
         top.title('Old Puzzles')
         l1 = Listbox(top)
         # Old puzzles and their solutions are displayed in pop-up
-        l1.insert(1,"1st one")
-        l1.insert(2,"2nd one")
-        l1.insert(3,"3rd one")
-        l1.insert(4,"4th one")
-        l1.insert(5,"5th one")
+        for i,puzzle in enumerate(saveAndRead.getAllPuzzleLabels()):
+            l1.insert(i,puzzle)
         l1.pack()
+        l1.bind('<<ListboxSelect>>', onselect)
+
 
 
 

@@ -1,8 +1,10 @@
 from selenium import webdriver
 
-driver = webdriver.Firefox(executable_path="./geckodriverUnix")
+driver = None
 
 def init():
+    global driver
+    driver = webdriver.Firefox(executable_path="../Scraper/geckodriverUnix")
     driver.get("https://www.nytimes.com/crosswords/game/mini")
     elem = driver.find_element_by_css_selector('.buttons-modalButton--1REsR')
     if elem is not None:
@@ -30,7 +32,7 @@ def getRects():
     rects = []
     for i in range(0, 25):
         rect = driver.find_element_by_id('cell-id-' + str(i))
-        if rect.get_attribute('class') is "Cell-block--1oNaD":
+        if rect.get_attribute('class') == "Cell-block--1oNaD":
             rects.append(None)
         else:
             rects.append('')
