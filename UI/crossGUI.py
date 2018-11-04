@@ -1,6 +1,6 @@
 import argparse
 
-from Tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM
+from tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM
 
 BOARDS = ['debug', 'n00b', 'l33t', 'error']  # Available crossword boards
 MARGIN = 20  # Pixels around the board
@@ -66,7 +66,7 @@ class CrosswordUI(Frame):
 
     def __draw_grid(self):
 
-        for i in xrange(6):
+        for i in range(6):
             color = "gray"
 
             x0 = MARGIN + i * SIDE
@@ -83,8 +83,8 @@ class CrosswordUI(Frame):
 
     def __draw_puzzle(self):
         self.canvas.delete("letters")
-        for i in xrange(5):
-            for j in xrange(5):
+        for i in range(5):
+            for j in range(5):
                 answer = self.game.puzzle[i][j]
                 if answer != 0:
                     x = MARGIN + j * SIDE + SIDE / 2
@@ -115,7 +115,7 @@ class CrosswordUI(Frame):
             self.canvas.focus_set()
 
             # get row and col numbers from x,y coordinates
-            row, col = (y - MARGIN) / SIDE, (x - MARGIN) / SIDE
+            row, col = (y - MARGIN) // SIDE, (x - MARGIN) // SIDE
 
             # if cell was selected already - deselect it
             if (row, col) == (self.row, self.col):
@@ -174,9 +174,9 @@ class CrosswordBoard(object):
 
     def __create_empty_board(self):
         board = []
-        for i in xrange(5):
+        for i in range(5):
             board.append([])
-            for j in xrange(5):
+            for j in range(5):
                 board[-1].append(0)
         return board
 
@@ -191,9 +191,9 @@ class CrosswordGame(object):
     def start(self):
         self.game_over = False
         self.puzzle = []
-        for i in xrange(5):
+        for i in range(5):
             self.puzzle.append([])
-            for j in xrange(5):
+            for j in range(5):
                 self.puzzle[i].append(self.start_puzzle[i][j])
 
 
