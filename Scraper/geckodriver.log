@@ -1,0 +1,124 @@
+1541107019019	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.tmkFmuU5aZln"
+
+(firefox:13118): Gtk-WARNING **: 00:16:59.720: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:13118): Gtk-WARNING **: 00:16:59.720: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541107020834	Marionette	INFO	Listening on port 38603
+1541107020931	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x4C0010,name=PHttpChannel::Msg___delete__) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x580027,name=PNecko::Msg_RemoveRequestContext) Channel closing: too late to send/recv, messages will be lost
+
+[Parent 13118, Gecko_IOThread] WARNING: pipe error (99): Connection reset by peer: file /build/firefox/src/mozilla-unified/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1541107194843	Marionette	INFO	Stopped listening on port 38603
+1541107204297	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.TxrZ5eZJzNyC"
+
+(firefox:13492): Gtk-WARNING **: 00:20:04.870: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:13492): Gtk-WARNING **: 00:20:04.870: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541107205836	Marionette	INFO	Listening on port 35713
+1541107205913	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+1541107321075	Marionette	INFO	Stopped listening on port 35713
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x160011,name=PBackgroundStorage::Msg_Observe) Channel error: cannot send/recv
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1541107324361	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.W3EVmF97sRYm"
+
+(firefox:13871): Gtk-WARNING **: 00:22:04.913: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:13871): Gtk-WARNING **: 00:22:04.913: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541107325881	Marionette	INFO	Listening on port 43173
+1541107325973	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+1541107349714	Marionette	INFO	Stopped listening on port 43173
+[Parent 13871, Gecko_IOThread] WARNING: pipe error (82): Connection reset by peer: file /build/firefox/src/mozilla-unified/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 13871, Gecko_IOThread] WARNING: pipe error: Broken pipe: file /build/firefox/src/mozilla-unified/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+[Parent 13871, Gecko_IOThread] WARNING: pipe error (120): Connection reset by peer: file /build/firefox/src/mozilla-unified/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1541147409064	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.cplXoSGDfq53"
+
+(firefox:20302): Gtk-WARNING **: 11:30:09.591: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:20302): Gtk-WARNING **: 11:30:09.591: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541147410533	Marionette	INFO	Listening on port 46519
+1541147410585	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x1F0016,name=PCameras::Msg_AllDone) Channel error: cannot send/recv
+
+1541147489408	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.2t7jUqXAf10C"
+1541147489578	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.bZu1dE32PnW0"
+
+(firefox:20684): Gtk-WARNING **: 11:31:30.097: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:20684): Gtk-WARNING **: 11:31:30.097: Theme parsing error: <data>:1:77: Expected ')' in color definition
+
+(firefox:20708): Gtk-WARNING **: 11:31:30.199: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:20708): Gtk-WARNING **: 11:31:30.199: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541147491573	Marionette	INFO	Listening on port 44071
+1541147491624	Marionette	WARN	TLS certificate errors will be ignored for this session
+1541147491633	Marionette	INFO	Listening on port 46665
+1541147491702	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://activity-stream/lib/TopSitesFeed.jsm, line 86: TypeError: setting getter-only property "_currentSearchHostname"
+JavaScript error: resource://gre/modules/Sqlite.jsm, line 841: Error: Connection is not open.
+1541147494023	Marionette	INFO	Stopped listening on port 46665
+1541147495228	Marionette	INFO	Stopped listening on port 44071
+1541147499522	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.FVTP9giauHsV"
+
+(firefox:21118): Gtk-WARNING **: 11:31:40.112: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:21118): Gtk-WARNING **: 11:31:40.112: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541147501018	Marionette	INFO	Listening on port 41709
+1541147501032	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+1541147857976	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.eiDLtyPJm3yo"
+
+(firefox:21646): Gtk-WARNING **: 11:37:38.611: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:21646): Gtk-WARNING **: 11:37:38.611: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541147859906	Marionette	INFO	Listening on port 33841
+1541147859987	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+[Parent 21118, Gecko_IOThread] WARNING: pipe error (98): Connection reset by peer: file /build/firefox/src/mozilla-unified/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1541147878964	Marionette	INFO	Stopped listening on port 41709
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+1541147896208	Marionette	INFO	Stopped listening on port 33841
+1541147951106	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.3grvIAQTxK2B"
+
+(firefox:21946): Gtk-WARNING **: 11:39:11.621: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:21946): Gtk-WARNING **: 11:39:11.621: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541147952462	Marionette	INFO	Listening on port 33509
+1541147952527	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+1541148043341	Marionette	INFO	Stopped listening on port 33509
+[Parent 21946, Gecko_IOThread] WARNING: pipe error: Broken pipe: file /build/firefox/src/mozilla-unified/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+1541332746419	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.xTmq77crdeG6"
+
+(firefox:3408): Gtk-WARNING **: 14:59:07.258: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:3408): Gtk-WARNING **: 14:59:07.258: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541332748370	Marionette	INFO	Listening on port 37609
+1541332748449	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+JavaScript error: https://www.nytimes.com/games-assets/main-9c89ce0dd4dc27af94e7.js, line 1: ReferenceError: event is not defined
+JavaScript error: https://www.nytimes.com/games-assets/main-9c89ce0dd4dc27af94e7.js, line 1: ReferenceError: event is not defined
+JavaScript error: https://www.nytimes.com/games-assets/main-9c89ce0dd4dc27af94e7.js, line 1: ReferenceError: event is not defined
+1541333238185	Marionette	INFO	Stopped listening on port 37609
+1541333247119	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.EvFyb66kMrSn"
+
+(firefox:3865): Gtk-WARNING **: 15:07:27.947: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:3865): Gtk-WARNING **: 15:07:27.947: Theme parsing error: <data>:1:77: Expected ')' in color definition
+1541333248884	Marionette	INFO	Listening on port 40497
+1541333248931	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.googletagmanager.com/gtm.js?id=GTM-P528B3&gtm_auth=tfAzqo1rYDLgYhmTnSjPqw&gtm_preview=env-130&gtm_cookies_win=x, line 1: unreachable code after return statement
+1541333337669	Marionette	INFO	Stopped listening on port 40497
+[Parent 3865, Gecko_IOThread] WARNING: pipe error (118): Connection reset by peer: file /build/firefox/src/mozilla-unified/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
