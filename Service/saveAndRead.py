@@ -1,17 +1,20 @@
 from Scraper import scraper
 import pickle
 import os
+import json
 from datetime import datetime
 
 def saveToFile(file, label):
-    pickle_out = open('../data/' + label, "wb")
-    pickle.dump(file, pickle_out)
-    pickle_out.close()
+    jsondata = json.dumps(file)
+    with open('../data/' + label +'.json', 'w') as outfile:
+        json.dump(file, outfile, indent=4)
 
 
 def readFromFile(label):
-    pickle_in = open('../data/' + label , "rb")
-    return pickle.load(pickle_in)
+    with open('../data/' + label+ '.json', 'r') as f:
+        data = json.load(f)
+
+    return data
 
 
 def saveTodaysPuzzle():
@@ -29,11 +32,9 @@ def saveTodaysPuzzle():
     dict['solutions'] = []
     for solution in scraper.getTodaysSolutions():
         dict['solutions'].append(solution)
-    saveToFile(dict, datetime.today().strftime("%B %d, %Y"))
+    saveToFile(dict, datetime.today().strftime("%B-%d-%Y"))
     scraper.close()
 
 def getAllPuzzleLabels():
     dirs = os.listdir('../data')
     return dirs
-
-#saveTodaysPuzzle()

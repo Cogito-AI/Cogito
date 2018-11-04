@@ -77,7 +77,7 @@ class CrosswordUI(Frame):
         self.__draw_puzzle()
 
         count = 0
-        for i,question in enumerate(saveAndRead.readFromFile(datetime.today().strftime("%B %d, %Y"))["questions"]):
+        for i,question in enumerate(saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))["questions"]):
             if i == 0:
                 self.canvas.create_text(620, 30 * count + 30, text='ACCROSS' ,font="Purisa")
                 count += 1
