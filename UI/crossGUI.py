@@ -113,16 +113,37 @@ class CrosswordUI(Frame):
 
     def __draw_puzzle(self):
         self.canvas.delete("letters")
+        labelcount = 0
+        row = [0, 0, 0, 0, 0]
+        col = [0, 0, 0, 0, 0]
         for i in range(5):
             for j in range(5):
                 answer = self.game.puzzle[i][j]
+
+                if self.puzzle['rects'][j + i*5] is None and row[j] == i:
+                    row[j] = i + 1
+                elif self.puzzle['rects'][j + i*5] is None and col[i] == j:
+                    col[i] = j + 1
+                elif self.puzzle['rects'][j + i*5] is not None and row[j] == i:
+                    x = j * SIDE + SIDE / 2 - 10
+                    y = i * SIDE + SIDE / 2 - 10
+                    labelcount += 1
+                    row[j] = -1
+                    self.canvas.create_text(x, y, text=labelcount)
+                elif self.puzzle['rects'][j + i*5] is not None and col[i] == j:
+                    x = j * SIDE + SIDE / 2 - 10
+                    y = i * SIDE + SIDE / 2 - 10
+                    labelcount += 1
+                    col[i] = -1
+                    self.canvas.create_text(x, y, text=labelcount)
+
                 if answer != 0:
                     x = MARGIN + j * SIDE + SIDE / 2
                     y = MARGIN + i * SIDE + SIDE / 2
                     original = self.game.start_puzzle[i][j]
                     color = "black" if answer == original else "sea green"
                     self.canvas.create_text(
-                        x, y, text=answer, tags="letters", fill=color
+                        x, y, text=answer, tags="letters", fill=color, font="Purisa"
                     )
 
     def __draw_cursor(self):
