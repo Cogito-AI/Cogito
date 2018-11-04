@@ -6,12 +6,12 @@ from datetime import datetime
 
 def saveToFile(file, label):
     jsondata = json.dumps(file)
-    with open('../data/' + label +'.json', 'w') as outfile:
+    with open('../data/' + label, 'w') as outfile:
         json.dump(file, outfile, indent=4)
 
 
 def readFromFile(label):
-    with open('../data/' + label+ '.json', 'r') as f:
+    with open('../data/' + label, 'r') as f:
         data = json.load(f)
 
     return data

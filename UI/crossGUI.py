@@ -45,6 +45,8 @@ class CrosswordUI(Frame):
 
         self.row, self.col = -1, -1
 
+        self.puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
+
         self.__initUI()
 
     def __initUI(self):
@@ -55,10 +57,12 @@ class CrosswordUI(Frame):
                              height=HEIGHT)
         self.canvas.pack(fill=BOTH, side=TOP)
 
+
         date_picker_button = Button(self,
                                     text="Old Puzzles",
                                     command=self.__display_old_puzzles)
         date_picker_button.pack(side=BOTTOM)
+
 
         clear_button = Button(self,
                               text="Clear answers",
@@ -71,23 +75,9 @@ class CrosswordUI(Frame):
                               command=self.__show_solutions)
         clear_button.pack(side=BOTTOM)
 
-
-
         self.__draw_grid()
         self.__draw_puzzle()
-
-        count = 0
-        for i,question in enumerate(saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))["questions"]):
-            if i == 0:
-                self.canvas.create_text(620, 30 * count + 30, text='ACCROSS' ,font="Purisa")
-                count += 1
-            if i == 5:
-                self.canvas.create_text(620, 30 * count + 30, text='DOWN', font="Purisa",)
-                count += 1
-            self.canvas.create_text(620, 30 * count + 30,text=question)
-            count += 1
-
-
+        self.__write_clues()
         self.canvas.bind("<Button-1>", self.__cell_clicked)
         self.canvas.bind("<Key>", self.__key_pressed)
 
@@ -107,6 +97,19 @@ class CrosswordUI(Frame):
             x1 = WIDTH - MARGIN
             y1 = MARGIN + i * SIDE
             self.canvas.create_line(x0, y0, x1, y1, fill=color)
+
+
+    def __write_clues(self):
+        count = 0
+        for i, question in enumerate(self.puzzle["questions"]):
+            if i == 0:
+                self.canvas.create_text(620, 30 * count + 30, text='ACCROSS', font="Purisa")
+                count += 1
+            if i == 5:
+                self.canvas.create_text(620, 30 * count + 30, text='DOWN', font="Purisa", )
+                count += 1
+            self.canvas.create_text(620, 30 * count + 30, text=question)
+            count += 1
 
     def __draw_puzzle(self):
         self.canvas.delete("letters")
@@ -184,10 +187,18 @@ class CrosswordUI(Frame):
             w = evt.widget
             index = int(w.curselection()[0])
             value = w.get(index)
-            ##do some work
+            self.puzzle = saveAndRead.readFromFile(value)
             top.destroy()
-
-
+            self.canvas.destroy()
+            self.canvas = Canvas(self,
+                                 width=WIDTH,
+                                 height=HEIGHT)
+            self.canvas.pack(fill=BOTH, side=TOP)
+            self.__draw_grid()
+            self.__draw_puzzle()
+            self.__write_clues()
+            self.canvas.bind("<Button-1>", self.__cell_clicked)
+            self.canvas.bind("<Key>", self.__key_pressed)
 
         top = Tk()
         top.title('Old Puzzles')
