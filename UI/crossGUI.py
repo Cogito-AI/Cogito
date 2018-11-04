@@ -153,7 +153,7 @@ class CrosswordUI(Frame):
         top = Tk()
         top.title('Old Puzzles')
         l1 = Listbox(top)
-        # Old puzzles and their solutions are displayed in pop-up window
+        # Old puzzles and their solutions are displayed in pop-up
         l1.insert(1,"1st one")
         l1.insert(2,"2nd one")
         l1.insert(3,"3rd one")
