@@ -1,6 +1,6 @@
 import argparse
 
-from tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM
+from tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM, Listbox
 
 BOARDS = ['debug', 'n00b', 'l33t', 'error']  # Available crossword boards
 MARGIN = 20  # Pixels around the board
@@ -58,6 +58,11 @@ class CrosswordUI(Frame):
                               command=self.__clear_answers)
         clear_button.pack(side=BOTTOM)
 
+        date_picker_button = Button(self,
+                              text="Old Puzzles",
+                              command=self.__display_old_puzzles)
+        date_picker_button.pack(side=BOTTOM)
+
         self.__draw_grid()
         self.__draw_puzzle()
 
@@ -97,15 +102,17 @@ class CrosswordUI(Frame):
 
     def __draw_cursor(self):
         self.canvas.delete("cursor")
+        self.canvas.delete("letters_clicked")
         if self.row >= 0 and self.col >= 0:
             x0 = MARGIN + self.col * SIDE + 1
             y0 = MARGIN + self.row * SIDE + 1
             x1 = MARGIN + (self.col + 1) * SIDE - 1
             y1 = MARGIN + (self.row + 1) * SIDE - 1
-            self.canvas.create_rectangle(
-                x0, y0, x1, y1,
-                fill= "yellow", tags="cursor"
-            )
+            keep_text = self.game.puzzle[self.row][self.col]
+            self.canvas.create_rectangle(x0, y0, x1, y1, fill="yellow", tags="cursor", )
+            if keep_text != 0:
+                self.canvas.create_text((x1 + x0) // 2, (y0 + y1) // 2, text=keep_text, tags="letters_clicked",
+                                        fill="black")
 
     def __cell_clicked(self, event):
         if self.game.game_over:
@@ -120,7 +127,7 @@ class CrosswordUI(Frame):
             # if cell was selected already - deselect it
             if (row, col) == (self.row, self.col):
                 self.row, self.col = -1, -1
-            elif self.game.puzzle[row][col] == 0:
+            else:
                 self.row, self.col = row, col
         else:
             self.row, self.col = -1, -1
@@ -141,6 +148,19 @@ class CrosswordUI(Frame):
     def __clear_answers(self):
         self.game.start()
         self.__draw_puzzle()
+
+    def __display_old_puzzles(self):
+        top = Tk()
+        top.title('Old Puzzles')
+        l1 = Listbox(top)
+        # Old puzzles and their solutions are displayed in pop-up window
+        l1.insert(1,"1st one")
+        l1.insert(2,"2nd one")
+        l1.insert(3,"3rd one")
+        l1.insert(4,"4th one")
+        l1.insert(5,"5th one")
+        l1.pack()
+
 
 
 class CrosswordBoard(object):
