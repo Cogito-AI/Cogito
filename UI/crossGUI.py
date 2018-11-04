@@ -1,6 +1,7 @@
 import argparse
 from Service import saveAndRead
 from tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM, Listbox
+from datetime import datetime
 
 BOARDS = ['debug', 'n00b', 'l33t', 'error']  # Available crossword boards
 MARGIN = 20  # Pixels around the board
@@ -53,18 +54,39 @@ class CrosswordUI(Frame):
                              width=WIDTH,
                              height=HEIGHT)
         self.canvas.pack(fill=BOTH, side=TOP)
+
+        date_picker_button = Button(self,
+                                    text="Old Puzzles",
+                                    command=self.__display_old_puzzles)
+        date_picker_button.pack(side=BOTTOM)
+
         clear_button = Button(self,
                               text="Clear answers",
                               command=self.__clear_answers)
         clear_button.pack(side=BOTTOM)
 
-        date_picker_button = Button(self,
-                              text="Old Puzzles",
-                              command=self.__display_old_puzzles)
-        date_picker_button.pack(side=BOTTOM)
+
+        clear_button = Button(self,
+                              text="Show Solutions",
+                              command=self.__show_solutions)
+        clear_button.pack(side=BOTTOM)
+
+
 
         self.__draw_grid()
         self.__draw_puzzle()
+
+        count = 0
+        for i,question in enumerate(saveAndRead.readFromFile(datetime.today().strftime("%B %d, %Y"))["questions"]):
+            if i == 0:
+                self.canvas.create_text(620, 30 * count + 30, text='ACCROSS' ,font="Purisa")
+                count += 1
+            if i == 5:
+                self.canvas.create_text(620, 30 * count + 30, text='DOWN', font="Purisa",)
+                count += 1
+            self.canvas.create_text(620, 30 * count + 30,text=question)
+            count += 1
+
 
         self.canvas.bind("<Button-1>", self.__cell_clicked)
         self.canvas.bind("<Key>", self.__key_pressed)
@@ -146,6 +168,11 @@ class CrosswordUI(Frame):
             self.__draw_cursor()
 
     def __clear_answers(self):
+        self.game.start()
+        self.__draw_puzzle()
+
+
+    def __show_solutions(self):
         self.game.start()
         self.__draw_puzzle()
 
@@ -237,5 +264,5 @@ if __name__ == '__main__':
 
         root = Tk()
         CrosswordUI(root, game)
-        root.geometry("%dx%d" % (WIDTH + 500, HEIGHT + 500))
+        root.geometry("%dx%d" % (WIDTH + 500, HEIGHT + 100))
         root.mainloop()

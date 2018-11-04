@@ -19,7 +19,7 @@ def saveTodaysPuzzle():
     dict = {}
     dict['questions'] = []
     for question in scraper.getQuestions():
-        question = question.replace('\n', ' ')
+        question = question.replace('\n', '-  ')
         dict['questions'].append(question)
 
     dict['rects'] = []
