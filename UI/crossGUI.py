@@ -195,7 +195,7 @@ class CrosswordUI(Frame):
     def __key_pressed(self, event):
         if self.game.game_over:
             return
-        if self.row >= 0 and self.col >= 0 and event.char in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz":
+        if self.row >= 0 and self.col >= 0 and event.char in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ":
             if event.char in "abcdefghijklmnopqrstuvwxyz":
                 event.char = event.char.upper()
             self.game.puzzle[self.row][self.col] = (event.char)
