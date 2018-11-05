@@ -120,6 +120,8 @@ class CrosswordUI(Frame):
             for j in range(5):
                 answer = self.game.puzzle[i][j]
 
+                # printing numbers
+
                 if self.puzzle['rects'][j + i*5] is None and (row[j] == i or col[i] == j):
                     if row[j] == i:
                         row[j] = i + 1
@@ -137,6 +139,12 @@ class CrosswordUI(Frame):
                     labelcount += 1
                     col[i] = -1
                     self.canvas.create_text(x, y, text=labelcount)
+                # end of printing numbers
+                # printing black areas
+                if self.puzzle['rects'] [j + i*5] is None:
+                    x = j * SIDE + SIDE / 2 -20
+                    y = i * SIDE + SIDE / 2 -20
+                    self.canvas.create_rectangle(x,y,x + 80, y + 80, fill='black')
 
                 if answer != 0:
                     x = MARGIN + j * SIDE + SIDE / 2
