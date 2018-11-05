@@ -4,7 +4,7 @@ from datetime import datetime
 driver = None
 
 def init():
-    print(datetime.today().strftime("%B-%d-%Y   Initializing scraper"))
+    print(datetime.today().strftime("%H:%M:%S.%f   Initializing scraper"))
     global driver
     driver = webdriver.Firefox(executable_path="../Scraper/geckodriverUnix")
     driver.get("https://www.nytimes.com/crosswords/game/mini")
@@ -14,7 +14,7 @@ def init():
 
 
 def close():
-    print(datetime.today().strftime("%B-%d-%Y   Disconnecting from Webpage"))
+    print(datetime.today().strftime("%H:%M:%S.%f   Disconnecting from Webpage"))
     driver.close()
 
 '''
@@ -22,7 +22,7 @@ Return String array questions are in the format of
  "<number>/questiontext"
 '''
 def getQuestions():
-    print(datetime.today().strftime("%B-%d-%Y   Fething questions via scraper"))
+    print(datetime.today().strftime("%H:%M:%S.%f   Fething questions via scraper"))
 
     questions = []
     raw = driver.find_elements_by_css_selector('.Clue-li--1JoPu')
