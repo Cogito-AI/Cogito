@@ -108,7 +108,7 @@ class CrosswordUI(Frame):
             if i == 5:
                 self.canvas.create_text(620, 30 * count + 30, text='DOWN', font="Purisa", )
                 count += 1
-            self.canvas.create_text(620, 30 * count + 30, text=question)
+            self.canvas.create_text(460, 30 * count + 30, text=question, anchor="nw")
             count += 1
 
     def __draw_puzzle(self):
