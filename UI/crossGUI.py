@@ -120,10 +120,11 @@ class CrosswordUI(Frame):
             for j in range(5):
                 answer = self.game.puzzle[i][j]
 
-                if self.puzzle['rects'][j + i*5] is None and row[j] == i:
-                    row[j] = i + 1
-                elif self.puzzle['rects'][j + i*5] is None and col[i] == j:
-                    col[i] = j + 1
+                if self.puzzle['rects'][j + i*5] is None and (row[j] == i or col[i] == j):
+                    if row[j] == i:
+                        row[j] = i + 1
+                    if col[i] == j:
+                        col[i] = j + 1
                 elif self.puzzle['rects'][j + i*5] is not None and row[j] == i:
                     x = j * SIDE + SIDE / 2 - 10
                     y = i * SIDE + SIDE / 2 - 10

@@ -1,6 +1,6 @@
 from Scraper import scraper
-import pickle
 import os
+from pathlib import Path
 import json
 from datetime import datetime
 
@@ -11,7 +11,10 @@ def saveToFile(file, label):
 
 
 def readFromFile(label):
-    with open('../data/' + label, 'r') as f:
+    my_file = Path('../data/' + label)
+    if not my_file.exists():
+        saveTodaysPuzzle()
+    with open(my_file, 'r') as f:
         data = json.load(f)
 
     return data
