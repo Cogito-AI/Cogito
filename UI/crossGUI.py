@@ -179,8 +179,11 @@ class CrosswordUI(Frame):
             # get row and col numbers from x,y coordinates
             row, col = (y - MARGIN) // SIDE, (x - MARGIN) // SIDE
 
+            # if the cell is balck then not clickable
+            if self.puzzle['rects'][col + row*5] is None:
+                pass
             # if cell was selected already - deselect it
-            if (row, col) == (self.row, self.col):
+            elif (row, col) == (self.row, self.col):
                 self.row, self.col = -1, -1
             else:
                 self.row, self.col = row, col
