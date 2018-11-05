@@ -207,10 +207,12 @@ class CrosswordUI(Frame):
         self.game.start()
         self.__draw_puzzle()
 
-
     def __show_solutions(self):
-        self.game.start()
+        for i in range (0,5):
+            for j in range(0,5):
+                self.game.puzzle[i][j] = self.puzzle['solutions'][j + i*5]
         self.__draw_puzzle()
+        self.__draw_cursor()
 
 
     def __display_old_puzzles(self):
