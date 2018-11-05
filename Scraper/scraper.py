@@ -1,8 +1,10 @@
 from selenium import webdriver
+from datetime import datetime
 
 driver = None
 
 def init():
+    print(datetime.today().strftime("%B-%d-%Y   Initializing scraper"))
     global driver
     driver = webdriver.Firefox(executable_path="../Scraper/geckodriverUnix")
     driver.get("https://www.nytimes.com/crosswords/game/mini")
@@ -12,6 +14,7 @@ def init():
 
 
 def close():
+    print(datetime.today().strftime("%B-%d-%Y   Disconnecting from Webpage"))
     driver.close()
 
 '''
@@ -19,6 +22,8 @@ Return String array questions are in the format of
  "<number>/questiontext"
 '''
 def getQuestions():
+    print(datetime.today().strftime("%B-%d-%Y   Fething questions via scraper"))
+
     questions = []
     raw = driver.find_elements_by_css_selector('.Clue-li--1JoPu')
     for question in raw:
@@ -29,6 +34,8 @@ def getQuestions():
 Return String array if rect is black block is None else the text in the cell by default ""
 '''
 def getRects():
+    print(datetime.today().strftime("%H:%M:%S.%f   Fething rectangles via scraper"))
+
     rects = []
     for i in range(0, 25):
         rect = driver.find_element_by_id('cell-id-' + str(i))
@@ -42,6 +49,8 @@ def getRects():
 Return String array if rect is black block is None else the letter in the rect
 '''
 def getTodaysSolutions():
+    print(datetime.today().strftime("%H:%M:%S.%f   Fething solutions via scraper"))
+
     revealbutton = driver.find_element_by_xpath('/html/body/div/div/div/div[4]/div/main/div[2]/div/div/ul/div[1]/li[2]')
     revealbutton.click()
     puzzlereveal = driver.find_element_by_xpath(

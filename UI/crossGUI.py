@@ -2,6 +2,7 @@ import argparse
 from Service import saveAndRead
 from tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM, Listbox
 from datetime import datetime
+import time
 
 BOARDS = ['debug', 'n00b', 'l33t', 'error']  # Available crossword boards
 MARGIN = 20  # Pixels around the board
@@ -50,13 +51,17 @@ class CrosswordUI(Frame):
         self.__initUI()
 
     def __initUI(self):
-        self.parent.title("COGITO")
+        self.parent.title(datetime.today().strftime("%B-%d-%Y"))
         self.pack(fill=BOTH)
         self.canvas = Canvas(self,
                              width=WIDTH,
                              height=HEIGHT)
         self.canvas.pack(fill=BOTH, side=TOP)
 
+        update_button = Button(self,
+                                    text="Update Todays Puzzle",
+                                    command=self.__update_todays_puzzle)
+        update_button.pack(side=BOTTOM)
 
         date_picker_button = Button(self,
                                     text="Old Puzzles",
@@ -70,10 +75,10 @@ class CrosswordUI(Frame):
         clear_button.pack(side=BOTTOM)
 
 
-        clear_button = Button(self,
+        show_solutions = Button(self,
                               text="Show Solutions",
                               command=self.__show_solutions)
-        clear_button.pack(side=BOTTOM)
+        show_solutions.pack(side=BOTTOM)
 
         self.__draw_grid()
         self.__draw_puzzle()
@@ -82,7 +87,7 @@ class CrosswordUI(Frame):
         self.canvas.bind("<Key>", self.__key_pressed)
 
     def __draw_grid(self):
-
+        self.parent.title(datetime.today().strftime("%B-%d-%Y"))
         for i in range(6):
             color = "gray"
 
@@ -203,11 +208,71 @@ class CrosswordUI(Frame):
             self.__draw_puzzle()
             self.__draw_cursor()
 
+
+    def draw_updating(self):
+        # create a oval (which will be a circle)
+        x0 = y0 = MARGIN + SIDE * 2
+        x1 = y1 = MARGIN + SIDE * 7
+        self.canvas.create_oval(
+            x0, y0, x1, y1,
+            tags="victory", fill="dark orange", outline="orange"
+        )
+        # create text
+        x = y = MARGIN + 4 * SIDE + SIDE / 2
+        self.canvas.create_text(
+            x, y,
+            text="You win!", tags="winner",
+            fill="white", font=("Arial", 32)
+        )
+
+
+    def __update_todays_puzzle(self):
+        print(datetime.today().strftime("%H:%M:%S.%f   update button initiated"))
+
+        self.draw_updating()
+        time.sleep(1)
+        saveAndRead.saveTodaysPuzzle()
+        self.puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
+        self.canvas.destroy()
+        self.canvas = Canvas(self,
+                             width=WIDTH,
+                             height=HEIGHT)
+        self.canvas.pack(fill=BOTH, side=TOP)
+        self.__draw_grid()
+        self.__draw_puzzle()
+        self.__write_clues()
+        self.canvas.bind("<Button-1>", self.__cell_clicked)
+        self.canvas.bind("<Key>", self.__key_pressed)
+
+
+    def draw_updating(self):
+        # create a oval (which will be a circle)
+        x0 = y0 = MARGIN + SIDE * 2
+        x1 = y1 = MARGIN + SIDE * 7
+        self.canvas.create_oval(
+            x0, y0, x1, y1,
+            tags="victory", fill="dark orange", outline="orange"
+        )
+        # create text
+        x = y = MARGIN + 4 * SIDE + SIDE / 2
+        self.canvas.create_text(
+            x, y,
+            text="You win!", tags="winner",
+            fill="white", font=("Arial", 32)
+        )
+        self.canvas.pack()
+
+
     def __clear_answers(self):
+        print(datetime.today().strftime("%H:%M:%S.%f   Clean answers button initiated"))
+
         self.game.start()
         self.__draw_puzzle()
 
     def __show_solutions(self):
+        print(datetime.today().strftime("%H:%M:%S.%f  show solutions button initiated"))
+
+
         for i in range (0,5):
             for j in range(0,5):
                 self.game.puzzle[i][j] = self.puzzle['solutions'][j + i*5]
@@ -223,6 +288,7 @@ class CrosswordUI(Frame):
             index = int(w.curselection()[0])
             value = w.get(index)
             self.puzzle = saveAndRead.readFromFile(value)
+            self.parent.title(value)
             top.destroy()
             self.canvas.destroy()
             self.canvas = Canvas(self,
@@ -310,5 +376,5 @@ if __name__ == '__main__':
 
         root = Tk()
         CrosswordUI(root, game)
-        root.geometry("%dx%d" % (WIDTH + 500, HEIGHT + 100))
+        root.geometry("%dx%d" % (WIDTH + 500, HEIGHT + 140))
         root.mainloop()
