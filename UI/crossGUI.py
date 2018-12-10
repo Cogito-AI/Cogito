@@ -203,6 +203,7 @@ class CrosswordUI(Frame):
         if self.row >= 0 and self.col >= 0 and event.char in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ":
             if event.char in "abcdefghijklmnopqrstuvwxyz":
                 event.char = event.char.upper()
+            print(datetime.today().strftime("%H:%M:%S.%f " + str(event.char) +" Entered in position " + str(self.row) + "X" +str(self.col)))
             self.game.puzzle[self.row][self.col] = (event.char)
             self.col, self.row = -1, -1
             self.__draw_puzzle()
