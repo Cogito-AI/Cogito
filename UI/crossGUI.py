@@ -375,6 +375,7 @@ if __name__ == '__main__':
         game = CrosswordGame(boards_file)
         game.start()
 
+        #game.puzzle
         root = Tk()
         CrosswordUI(root, game)
         root.geometry("%dx%d" % (WIDTH + 500, HEIGHT + 140))
