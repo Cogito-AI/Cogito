@@ -79,16 +79,24 @@ for i,rect in enumerate(puzzle['rects']):
 
 squares = preprocess(puzzle)
 
-
-#Acquire words
-possibilities = []
-for i in range(len(puzzle['questions'])):
-    question = puzzle['questions'][i][3:]
-    regex = re.compile('[^a-zA-Z ]')
-    # First parameter is the replacement, second parameter is your input string
-    question = regex.sub(' ', question)
-    words = api.words(ml=question , max = 3, sp='?'*len(squares[i]))
-    possibilities.append(words)
+def get_possible_answers(board, questions, squares, num_of_word):
+    possibilities = []
+    for i, question in enumerate(questions):
+        incomplete = False
+        sp = ''
+        words = []
+        for j, square in enumerate(squares[i]):
+            sp += board[square[0]][square[1]]
+            if board[square[0]][square[1]] == '':
+                incomplete = True
+                sp += '?'
+        if incomplete:
+            question = puzzle['questions'][i][3:]
+            words = api.words(ml=question, max=num_of_word, sp=sp)
+            if len(words) == 0:
+                words = api.words(max=num_of_word, sp=sp)
+        possibilities.append(words)
+    return possibilities
 
 
 def put_in_board(word, squares, board):
@@ -105,13 +113,7 @@ def put_in_board(word, squares, board):
             return False , board, -1
     return True, newboard, point
 
-## create tree from possibilities
-
-#list of leaf nodes with number of solved
-leaf = []
-#root Node with empy board
-root = Node(board,0)
-def create_tree_of_possibilities(root, possibilities, squares):
+def create_tree_of_possibilities(root, possibilities, squares, leaf):
     if len(possibilities) == 0:
         leaf.append([root.board, root.point])
         return
@@ -120,24 +122,51 @@ def create_tree_of_possibilities(root, possibilities, squares):
             if i == len(possibilities[0]) :
                 child = Node(root.board, root.point)
                 root.add_child(child)
-                create_tree_of_possibilities(child,possibilities[1:],squares[1:])
+                create_tree_of_possibilities(child,possibilities[1:],squares[1:], leaf)
             else:
                 put, board, point = put_in_board(possibilities[0][i], squares[0], root.board)
                 if put:
                     child = Node(board, root.point + point)
                     root.add_child(child)
-                    create_tree_of_possibilities(child, possibilities[1:], squares[1:])
+                    create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf)
     else:
         child = Node(root.board, root.point)
         root.add_child(child)
-        create_tree_of_possibilities(child, possibilities[1:], squares[1:])
+        create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf)
 
 
+def run_pipeline(board, num_of_words):
+    possibilities = get_possible_answers(board,puzzle['questions'], squares, num_of_words)
+    leaf = []
+    root = Node(board, 0)
+    create_tree_of_possibilities(root,possibilities,squares,leaf)
+    leaf = sorted(leaf, key=lambda x: x[1], reverse=True)[:3]
+    return leaf
 
-create_tree_of_possibilities(root,possibilities,squares)
-leaf = sorted(leaf, key=lambda x: x[1], reverse=True)[:5]
+results = run_pipeline(board,3)
+
+result_set= []
+for result in results:
+    result_set += run_pipeline(result[0], 3)
+    result_set = sorted(result_set, key=lambda x: x[1], reverse=True)
+
+for i in range(len(result_set)):
+    for x in result_set[i][0]:
+        print(x, sep="  ")
+    print()
+
 
 '''
+#Acquire words
+
+for i in range(len(puzzle['questions'])):
+    question = puzzle['questions'][i][3:]
+    regex = re.compile('[^a-zA-Z ]')
+    # First parameter is the replacement, second parameter is your input string
+    question = regex.sub(' ', question)
+    words = api.words(ml=question , max = 3, sp='?'*len(squares[i]))
+    possibilities.append(words)
+    
 def check_truuthness(board,solution):
     point = 0
     for i, letter in enumerate(solution):
@@ -149,7 +178,7 @@ for board in leaf:
     check_truuthness(board,puzzle['solutions'])
 
 leaf = sorted(leaf, key=lambda x: x[1], reverse=True)
-'''
+
 
 def find_incomplete_results(board, questions, squares):
     for i, question in enumerate(questions):
@@ -171,7 +200,7 @@ def find_incomplete_results(board, questions, squares):
 
 for board in leaf:
     find_incomplete_results(board[0],puzzle['questions'], squares)
+'''
 
-pass
 
 
