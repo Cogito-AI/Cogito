@@ -1,3 +1,5 @@
+import re
+import string
 from copy import deepcopy
 
 from datamuse import datamuse
@@ -14,6 +16,8 @@ class Node(object):
     def add_child(self, obj):
         self.children.append(obj)
 
+    def set_point(self, obj):
+        self.point = obj
 
 def preprocess(puzzle):
     squares = [[] for y in range(10)]
@@ -71,7 +75,7 @@ for i,rect in enumerate(puzzle['rects']):
     if rect is None:
         board[i//5][i%5] = None
     else:
-        board[i // 5][i%5] = " "
+        board[i // 5][i%5] = ""
 
 squares = preprocess(puzzle)
 
@@ -79,8 +83,13 @@ squares = preprocess(puzzle)
 #Acquire words
 possibilities = []
 for i in range(len(puzzle['questions'])):
-    words = api.words(ml=puzzle['questions'][i][3:], max = 5, sp='?'*len(squares[i]))
+    question = puzzle['questions'][i][3:]
+    regex = re.compile('[^a-zA-Z ]')
+    # First parameter is the replacement, second parameter is your input string
+    question = regex.sub(' ', question)
+    words = api.words(ml=question , max = 3, sp='?'*len(squares[i]))
     possibilities.append(words)
+
 
 def put_in_board(word, squares, board):
     newboard = deepcopy(board)
@@ -88,10 +97,10 @@ def put_in_board(word, squares, board):
     for i,square in enumerate(squares):
         if board[square[0]][square[1]] is word['word'][i]:
             newboard[square[0]][square[1]] = word['word'][i]
-            point = 2
-        elif board[square[0]][square[1]] is ' ':
+            point += 1
+        elif board[square[0]][square[1]] is '':
             newboard[square[0]][square[1]] = word['word'][i]
-            point = 0
+            point += 0
         else:
             return False , board, -1
     return True, newboard, point
@@ -109,9 +118,9 @@ def create_tree_of_possibilities(root, possibilities, squares):
     if len(possibilities[0]) > 0:
         for i in range(0,len(possibilities[0]) + 1):
             if i == len(possibilities[0]) :
-                 child = Node(root.board, root.point)
-                 root.add_child(child)
-                 create_tree_of_possibilities(child,possibilities[1:],squares[1:])
+                child = Node(root.board, root.point)
+                root.add_child(child)
+                create_tree_of_possibilities(child,possibilities[1:],squares[1:])
             else:
                 put, board, point = put_in_board(possibilities[0][i], squares[0], root.board)
                 if put:
@@ -126,7 +135,43 @@ def create_tree_of_possibilities(root, possibilities, squares):
 
 
 create_tree_of_possibilities(root,possibilities,squares)
+leaf = sorted(leaf, key=lambda x: x[1], reverse=True)[:5]
+
+'''
+def check_truuthness(board,solution):
+    point = 0
+    for i, letter in enumerate(solution):
+        if letter is not None and board[0][i // 5][i % 5].upper() == letter:
+            point += 1
+    board[1] = point
+
+for board in leaf:
+    check_truuthness(board,puzzle['solutions'])
+
 leaf = sorted(leaf, key=lambda x: x[1], reverse=True)
+'''
+
+def find_incomplete_results(board, questions, squares):
+    for i, question in enumerate(questions):
+        incomplete = False
+        sp = ''
+        for j, square in enumerate(squares[i]):
+            sp += board[square[0]][square[1]]
+            if board[square[0]][square[1]] == '':
+                incomplete = True
+                sp += '?'
+        if incomplete:
+            question = puzzle['questions'][i][3:]
+            word = api.words(ml=question, max=1, sp=sp) #[0]['word']
+            if len(word) > 0 :
+                word = word[0]['word']
+                for j, square in enumerate(squares[i]):
+                    board[square[0]][square[1]] = word[j]
+
+
+for board in leaf:
+    find_incomplete_results(board[0],puzzle['questions'], squares)
+
 pass
 
 
