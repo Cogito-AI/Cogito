@@ -39,7 +39,7 @@ class CrosswordUI(Frame):
     """
      Drawing the board and accepting user input.
     """
-    def __init__(self, parent, game):
+    def __init__(self, parent, game, solutionUI = False):
         self.game = game
         Frame.__init__(self, parent)
         self.parent = parent
@@ -48,7 +48,11 @@ class CrosswordUI(Frame):
 
         self.puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
 
-        self.__initUI()
+        if solutionUI== True:
+            self.__initSolutionUI()
+        else:
+            self.__initUI()
+
 
     def __initUI(self):
         self.parent.title(datetime.today().strftime("%B-%d-%Y"))
@@ -85,6 +89,19 @@ class CrosswordUI(Frame):
         self.__write_clues()
         self.canvas.bind("<Button-1>", self.__cell_clicked)
         self.canvas.bind("<Key>", self.__key_pressed)
+
+
+    def __initSolutionUI(self):
+        self.parent.title(datetime.today().strftime("%B-%d-%Y"))
+        self.pack(fill=BOTH)
+        self.canvas = Canvas(self,
+                             width=WIDTH,
+                             height=HEIGHT)
+        self.canvas.pack(fill=BOTH, side=TOP)
+
+        self.__draw_grid()
+        self.__draw_puzzle()
+
 
     def __draw_grid(self):
         self.parent.title(datetime.today().strftime("%B-%d-%Y"))
@@ -273,12 +290,17 @@ class CrosswordUI(Frame):
     def __show_solutions(self):
         print(datetime.today().strftime("%H:%M:%S.%f  show solutions button initiated"))
 
+        popUpSolutions = Tk()
+        popUpSolutions.wm_title("Solutions")
+        ui = CrosswordUI(popUpSolutions,self.game,True)
 
         for i in range (0,5):
             for j in range(0,5):
-                self.game.puzzle[i][j] = self.puzzle['solutions'][j + i*5]
-        self.__draw_puzzle()
-        self.__draw_cursor()
+
+                ui.game.puzzle[i][j] = ui.puzzle['solutions'][j + i * 5]
+
+        ui.__draw_puzzle()
+        ui.__draw_cursor()
 
 
     def __display_old_puzzles(self):
