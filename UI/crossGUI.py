@@ -320,6 +320,7 @@ class CrosswordUI(Frame):
 
     def __display_old_puzzles(self):
 
+        self.__clear_answers()
         def onselect(evt):
             # Note here that Tkinter passes an event object to onselect()
             w = evt.widget
