@@ -1,5 +1,6 @@
 import argparse
 from Service import saveAndRead
+from model import model
 from tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM, Listbox
 from datetime import datetime
 import time
@@ -83,6 +84,11 @@ class CrosswordUI(Frame):
                               text="Show Solutions",
                               command=self.__show_solutions)
         show_solutions.pack(side=BOTTOM)
+
+        solve_puzzle = Button(self,
+                                text="Solve Puzzle",
+                                command=self.__solve_puzzle)
+        solve_puzzle.pack(side=BOTTOM)
 
         self.__draw_grid()
         self.__draw_puzzle()
@@ -168,7 +174,7 @@ class CrosswordUI(Frame):
                     y = i * SIDE + SIDE / 2 -20
                     self.canvas.create_rectangle(x,y,x + 80, y + 80, fill='black')
 
-                if answer != 0:
+                if answer is not None and answer != 0:
                     x = MARGIN + j * SIDE + SIDE / 2
                     y = MARGIN + i * SIDE + SIDE / 2
                     original = self.game.start_puzzle[i][j]
@@ -302,6 +308,15 @@ class CrosswordUI(Frame):
         ui.__draw_puzzle()
         ui.__draw_cursor()
 
+    def __solve_puzzle(self):
+        print(datetime.today().strftime("%H:%M:%S.%f  solve puzzle button initiated"))
+        self.game.puzzle = model.solve(self.puzzle, self)
+        self.__draw_puzzle()
+        self.__draw_cursor()
+
+    def refresh_board(self):
+        self.__draw_puzzle()
+        self.__draw_cursor()
 
     def __display_old_puzzles(self):
 
@@ -400,5 +415,5 @@ if __name__ == '__main__':
         #game.puzzle
         root = Tk()
         CrosswordUI(root, game)
-        root.geometry("%dx%d" % (WIDTH + 500, HEIGHT + 140))
+        root.geometry("%dx%d" % (WIDTH + 500, HEIGHT + 160))
         root.mainloop()

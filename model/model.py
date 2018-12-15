@@ -8,8 +8,9 @@ from _datetime import datetime
 import numpy as np
 
 class Node(object):
-    def __init__(self, board, point):
+    def __init__(self, board, point, parent):
         self.board = board
+        self.parent = parent
         self.point = point
         self.children = []
 
@@ -68,17 +69,17 @@ def preprocess(puzzle):
 # connect to apı
 api = datamuse.Datamuse()
 #puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
-puzzle = saveAndRead.readFromFile('October-03-2018')
+#puzzle = saveAndRead.readFromFile('October-03-2018')
 
-# create board
-board = [[[]for x in range(5)] for y in range(5)]
-for i,rect in enumerate(puzzle['rects']):
-    if rect is None:
-        board[i//5][i%5] = None
-    else:
-        board[i // 5][i%5] = ""
 
-squares = preprocess(puzzle)
+def initialize_env_variables(puzzle, board):
+    # create board
+    for i,rect in enumerate(puzzle['rects']):
+        if rect is None:
+            board[i//5][i%5] = None
+        else:
+            board[i // 5][i%5] = ""
+
 
 def get_possible_answers(board, questions, squares, num_of_word):
     possibilities = []
@@ -92,7 +93,7 @@ def get_possible_answers(board, questions, squares, num_of_word):
                 incomplete = True
                 sp += '?'
         if incomplete:
-            question = puzzle['questions'][i][3:]
+            question = question[3:]
             regex = re.compile('[^a-zA-Z ]')
             # First parameter is the replacement, second parameter is your input string
             question = regex.sub(' ', question)
@@ -117,65 +118,80 @@ def put_in_board(word, squares, board):
             return False , board, -1
     return True, newboard, point
 
-def create_tree_of_possibilities(root, possibilities, squares, leaf):
+
+def create_tree_of_possibilities(root, possibilities, squares, leaf, ui):
     if len(possibilities) == 0:
-        leaf.append([root.board, root.point])
+        leaf.append(root)
         return
     if len(possibilities[0]) > 0:
         for i in range(0,len(possibilities[0]) + 1):
             if i == len(possibilities[0]):
-                child = Node(root.board, root.point + 1)
+                child = Node(root.board, root.point + 1, root)
                 root.add_child(child)
-                create_tree_of_possibilities(child,possibilities[1:],squares[1:], leaf)
+                create_tree_of_possibilities(child,possibilities[1:],squares[1:], leaf, ui)
             else:
                 put, board, point = put_in_board(possibilities[0][i], squares[0], root.board)
                 if put:
-                    child = Node(board, root.point + point)
+                    child = Node(board, root.point + point, root)
                     root.add_child(child)
-                    create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf)
+                    create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf, ui)
     else:
-        child = Node(root.board, root.point + 1)
+        child = Node(root.board, root.point + 1, root)
         root.add_child(child)
-        create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf)
+        create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf, ui)
 
 
-def check_truuthness(board,solution):
+def check_truuthness(board,solution, squares):
     point = 0
     for word in squares:
         for letter in word:
-            if solution[letter[0] * 5 + letter[1]] is not None and solution[letter[0] * 5 + letter[1]] != board[0][letter[0]][letter[1]].upper():
+            if solution[letter[0] * 5 + letter[1]] is not None and solution[letter[0] * 5 + letter[1]] != board.board[letter[0]][letter[1]].upper():
                 point -= 5
                 break
         point += 5
-    board[1] += point
+    board.point += point
 
 
-def run_pipeline(board, num_of_words, top_n_possinle):
-    possibilities = get_possible_answers(board,puzzle['questions'], squares, num_of_words)
+def run_pipeline(puzzle, squares, root, num_of_words, top_n_possinle, ui):
+    possibilities = get_possible_answers(root.board,puzzle['questions'], squares, num_of_words)
     leaf = []
-    root = Node(board, 0)
-    create_tree_of_possibilities(root,possibilities,squares,leaf)
+    create_tree_of_possibilities(root, possibilities, squares, leaf, ui)
 
     #idk if we can
-    for board in leaf:
-        check_truuthness(board, puzzle['solutions'])
+    for node in leaf:
+        check_truuthness(node, puzzle['solutions'], squares)
 
-    leaf = sorted(leaf, key=lambda x: x[1], reverse=True)
+    leaf = sorted(leaf, key=lambda x: x.point, reverse=True)
     return leaf[:top_n_possinle]
 
 
-
-results = run_pipeline(board,3, 3)
-
-result_set= []
-for result in results:
-    result_set += run_pipeline(result[0], 3, 5)
-    result_set = sorted(result_set, key=lambda x: x[1], reverse=True)
-
-for i in range(len(result_set)):
-    for x in result_set[i][0]:
-        print(x, sep="  ")
+def print_pretty(matrice):
+    for row in matrice:
+        print(row)
     print()
+
+def solve(puzzle, ui):
+    board = [[[] for x in range(5)] for y in range(5)]
+    sqaures = preprocess(puzzle)
+    initialize_env_variables(puzzle, board)
+
+    root = Node(board,0,None)
+    results = run_pipeline(puzzle, sqaures, root, 3, 3, ui)
+    result_set= []
+    for result in results:
+        result_set += run_pipeline(puzzle, sqaures, result, 3, 5, ui)
+
+    result_set = sorted(result_set, key=lambda x: x.point, reverse=True)
+
+    trace_node = result_set[0]
+
+    print(datetime.today().strftime("%H:%M:%S.%f  Trace from resulting leaf node to root Node: "))
+    while trace_node.parent is not None:
+        print_pretty(trace_node.board)
+        trace_node = trace_node.parent
+    print(datetime.today().strftime("%H:%M:%S.%f  End of Trace"))
+
+    return result_set[0].board
 
 
 '''
