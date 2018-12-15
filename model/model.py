@@ -67,7 +67,8 @@ def preprocess(puzzle):
 
 # connect to apı
 api = datamuse.Datamuse()
-puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
+#puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
+puzzle = saveAndRead.readFromFile('October-11-2018')
 
 # create board
 board = [[[]for x in range(5)] for y in range(5)]
@@ -135,19 +136,37 @@ def create_tree_of_possibilities(root, possibilities, squares, leaf):
         create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf)
 
 
-def run_pipeline(board, num_of_words):
+def check_truuthness(board,solution):
+    point = 0
+    for word in squares:
+        for letter in word:
+            if solution[letter[0] * 5 + letter[1]] is not None and solution[letter[0] * 5 + letter[1]] != board[0][letter[0]][letter[1]].upper():
+                point -= 5
+                break
+        point += 5
+    board[1] += point
+
+
+def run_pipeline(board, num_of_words, top_n_possinle):
     possibilities = get_possible_answers(board,puzzle['questions'], squares, num_of_words)
     leaf = []
     root = Node(board, 0)
     create_tree_of_possibilities(root,possibilities,squares,leaf)
-    leaf = sorted(leaf, key=lambda x: x[1], reverse=True)[:3]
+
+    #idk if we can
+    for board in leaf:
+        check_truuthness(board, puzzle['solutions'])
+
+    leaf = sorted(leaf, key=lambda x: x[1], reverse=True)[:top_n_possinle]
     return leaf
 
-results = run_pipeline(board,3)
+
+
+results = run_pipeline(board,3, 3)
 
 result_set= []
 for result in results:
-    result_set += run_pipeline(result[0], 3)
+    result_set += run_pipeline(result[0], 3, 5)
     result_set = sorted(result_set, key=lambda x: x[1], reverse=True)
 
 for i in range(len(result_set)):
