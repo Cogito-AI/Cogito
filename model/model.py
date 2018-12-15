@@ -68,7 +68,7 @@ def preprocess(puzzle):
 # connect to apı
 api = datamuse.Datamuse()
 #puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
-puzzle = saveAndRead.readFromFile('October-11-2018')
+puzzle = saveAndRead.readFromFile('October-03-2018')
 
 # create board
 board = [[[]for x in range(5)] for y in range(5)]
@@ -93,6 +93,9 @@ def get_possible_answers(board, questions, squares, num_of_word):
                 sp += '?'
         if incomplete:
             question = puzzle['questions'][i][3:]
+            regex = re.compile('[^a-zA-Z ]')
+            # First parameter is the replacement, second parameter is your input string
+            question = regex.sub(' ', question)
             words = api.words(ml=question, max=num_of_word, sp=sp)
             if len(words) == 0:
                 words = api.words(max=num_of_word, sp=sp)
@@ -106,7 +109,7 @@ def put_in_board(word, squares, board):
     for i,square in enumerate(squares):
         if board[square[0]][square[1]] is word['word'][i]:
             newboard[square[0]][square[1]] = word['word'][i]
-            point += 1
+            point += 0
         elif board[square[0]][square[1]] is '':
             newboard[square[0]][square[1]] = word['word'][i]
             point += 0
@@ -120,8 +123,8 @@ def create_tree_of_possibilities(root, possibilities, squares, leaf):
         return
     if len(possibilities[0]) > 0:
         for i in range(0,len(possibilities[0]) + 1):
-            if i == len(possibilities[0]) :
-                child = Node(root.board, root.point)
+            if i == len(possibilities[0]):
+                child = Node(root.board, root.point + 1)
                 root.add_child(child)
                 create_tree_of_possibilities(child,possibilities[1:],squares[1:], leaf)
             else:
@@ -131,7 +134,7 @@ def create_tree_of_possibilities(root, possibilities, squares, leaf):
                     root.add_child(child)
                     create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf)
     else:
-        child = Node(root.board, root.point)
+        child = Node(root.board, root.point + 1)
         root.add_child(child)
         create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf)
 
@@ -157,8 +160,8 @@ def run_pipeline(board, num_of_words, top_n_possinle):
     for board in leaf:
         check_truuthness(board, puzzle['solutions'])
 
-    leaf = sorted(leaf, key=lambda x: x[1], reverse=True)[:top_n_possinle]
-    return leaf
+    leaf = sorted(leaf, key=lambda x: x[1], reverse=True)
+    return leaf[:top_n_possinle]
 
 
 
