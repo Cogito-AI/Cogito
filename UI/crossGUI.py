@@ -46,13 +46,13 @@ class CrosswordUI(Frame):
         self.parent = parent
 
         self.row, self.col = -1, -1
-
         self.puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
 
         if solutionUI== True:
             self.__initSolutionUI()
         else:
             self.__initUI()
+
 
 
     def __initUI(self):
@@ -104,9 +104,6 @@ class CrosswordUI(Frame):
                              width=WIDTH,
                              height=HEIGHT)
         self.canvas.pack(fill=BOTH, side=TOP)
-
-        self.__draw_grid()
-        self.__draw_puzzle()
 
 
     def __draw_grid(self):
@@ -294,19 +291,21 @@ class CrosswordUI(Frame):
         self.__draw_puzzle()
 
     def __show_solutions(self):
+
         print(datetime.today().strftime("%H:%M:%S.%f  show solutions button initiated"))
 
         popUpSolutions = Tk()
         popUpSolutions.wm_title("Solutions")
-        ui = CrosswordUI(popUpSolutions,self.game,True)
+        ui = CrosswordUI(popUpSolutions,self.game, solutionUI = True)
 
         for i in range (0,5):
             for j in range(0,5):
+                ui.game.puzzle[i][j] = self.puzzle['solutions'][j + i * 5]
 
-                ui.game.puzzle[i][j] = ui.puzzle['solutions'][j + i * 5]
-
+        ui.puzzle = self.puzzle
+        ui.__draw_grid()
         ui.__draw_puzzle()
-        ui.__draw_cursor()
+
 
     def __solve_puzzle(self):
         print(datetime.today().strftime("%H:%M:%S.%f  solve puzzle button initiated"))
@@ -327,6 +326,7 @@ class CrosswordUI(Frame):
             index = int(w.curselection()[0])
             value = w.get(index)
             self.puzzle = saveAndRead.readFromFile(value)
+            self.game.puzzle = [[" ", " ", " ", " ", " "] for y in range(5)]
             self.parent.title(value)
             top.destroy()
             self.canvas.destroy()
