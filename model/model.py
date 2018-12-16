@@ -165,33 +165,32 @@ def run_pipeline(puzzle, squares, root, num_of_words, top_n_possinle, ui):
     return leaf[:top_n_possinle]
 
 
-def print_pretty(matrice):
-    for row in matrice:
-        print(row)
-    print()
-
 def solve(puzzle, ui):
     board = [[[] for x in range(5)] for y in range(5)]
     sqaures = preprocess(puzzle)
     initialize_env_variables(puzzle, board)
 
     root = Node(board,0,None)
-    results = run_pipeline(puzzle, sqaures, root, 3, 3, ui)
-    result_set= []
-    for result in results:
-        result_set += run_pipeline(puzzle, sqaures, result, 3, 5, ui)
 
-    result_set = sorted(result_set, key=lambda x: x.point, reverse=True)
+    results = []
+    for i in range(3):
+        results = run_pipeline(puzzle, sqaures, root, 3, 1, ui)
+        root = results[0]
 
-    trace_node = result_set[0]
+    trace_node = results[0]
 
     print(datetime.today().strftime("%H:%M:%S.%f  Trace from resulting leaf node to root Node: "))
-    while trace_node.parent is not None:
-        print_pretty(trace_node.board)
+    while trace_node is not None:
+        for i in range(5):
+            for j, children in enumerate(trace_node.children):
+                print(children.board[i], end='\t')
+            print('\n', end='')
+        print()
+
         trace_node = trace_node.parent
     print(datetime.today().strftime("%H:%M:%S.%f  End of Trace"))
 
-    return result_set[0].board
+    return results[0].board
 
 
 '''
