@@ -177,7 +177,7 @@ class CrosswordUI(Frame):
                     original = self.game.start_puzzle[i][j]
                     color = "black" if answer == original else "sea green"
                     self.canvas.create_text(
-                        x, y, text=answer, tags="letters", fill=color, font="Purisa"
+                        x, y, text=answer.upper(), tags="letters", fill=color, font="Purisa"
                     )
 
     def __draw_cursor(self):

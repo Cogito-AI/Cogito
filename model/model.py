@@ -97,7 +97,10 @@ def get_possible_answers(board, questions, squares, num_of_word):
             regex = re.compile('[^a-zA-Z ]')
             # First parameter is the replacement, second parameter is your input string
             question = regex.sub(' ', question)
+            print(datetime.today().strftime("%H:%M:%S.%f  acquiring words on the pattern of:" + sp))
+            print(datetime.today().strftime(question))
             words = api.words(ml=question, max=num_of_word, sp=sp)
+            print(datetime.today().strftime('possible answers:' + str(words)))
             if len(words) == 0:
                 words = api.words(max=num_of_word, sp=sp)
         possibilities.append(words)
@@ -174,6 +177,11 @@ def solve(puzzle, ui):
 
     results = []
     for i in range(3):
+
+        print(datetime.today().strftime("%H:%M:%S.%f  cretae tree of possible answers with the root of:"))
+        for row in root.board:
+            print(row)
+
         results = run_pipeline(puzzle, sqaures, root, 3, 1, ui)
         root = results[0]
 
