@@ -97,10 +97,14 @@ def get_possible_answers(board, questions, squares, num_of_word):
             regex = re.compile('[^a-zA-Z ]')
             # First parameter is the replacement, second parameter is your input string
             question = regex.sub(' ', question)
-            print(datetime.today().strftime("%H:%M:%S.%f  acquiring words on the pattern of:" + sp))
+
             print(datetime.today().strftime(question))
+            print(datetime.today().strftime("%H:%M:%S.%f  acquiring words on the pattern of:" + sp))
             words = api.words(ml=question, max=num_of_word, sp=sp)
-            print(datetime.today().strftime('possible answers:' + str(words)))
+            for word in words:
+                print(word['word'], end=' ')
+            print()
+
             if len(words) == 0:
                 words = api.words(max=num_of_word, sp=sp)
         possibilities.append(words)
