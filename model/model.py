@@ -111,13 +111,14 @@ def get_possible_answers(board, questions, squares, num_of_word):
     return possibilities
 
 
-def put_in_board(word, squares, board):
+def put_in_board(word, squares, board, ui):
+    points = [5,5,5]
     newboard = deepcopy(board)
     point = 0
     for i,square in enumerate(squares):
         if board[square[0]][square[1]] is word['word'][i]:
             newboard[square[0]][square[1]] = word['word'][i]
-            point += 0
+            point += points[ui]
         elif board[square[0]][square[1]] is '':
             newboard[square[0]][square[1]] = word['word'][i]
             point += 0
@@ -137,7 +138,7 @@ def create_tree_of_possibilities(root, possibilities, squares, leaf, ui):
                 root.add_child(child)
                 create_tree_of_possibilities(child,possibilities[1:],squares[1:], leaf, ui)
             else:
-                put, board, point = put_in_board(possibilities[0][i], squares[0], root.board)
+                put, board, point = put_in_board(possibilities[0][i], squares[0], root.board, ui)
                 if put:
                     child = Node(board, root.point + point, root)
                     root.add_child(child)
@@ -147,7 +148,7 @@ def create_tree_of_possibilities(root, possibilities, squares, leaf, ui):
         root.add_child(child)
         create_tree_of_possibilities(child, possibilities[1:], squares[1:], leaf, ui)
 
-
+'''
 def check_truuthness(board,solution, squares):
     point = 0
     for word in squares:
@@ -157,7 +158,7 @@ def check_truuthness(board,solution, squares):
                 break
         point += 5
     board.point += point
-
+'''
 
 def run_pipeline(puzzle, squares, root, num_of_words, top_n_possinle, ui):
     possibilities = get_possible_answers(root.board,puzzle['questions'], squares, num_of_words)
@@ -165,8 +166,11 @@ def run_pipeline(puzzle, squares, root, num_of_words, top_n_possinle, ui):
     create_tree_of_possibilities(root, possibilities, squares, leaf, ui)
 
     #idk if we can
-    for node in leaf:
-        check_truuthness(node, puzzle['solutions'], squares)
+    '''
+    if ui == -1:
+        for node in leaf:
+            check_truuthness(node, puzzle['solutions'], squares)
+    '''
 
     leaf = sorted(leaf, key=lambda x: x.point, reverse=True)
     return leaf[:top_n_possinle]
@@ -180,13 +184,13 @@ def solve(puzzle, ui):
     root = Node(board,0,None)
 
     results = []
-    for i in range(3):
+    for i in range(1):
 
         print(datetime.today().strftime("%H:%M:%S.%f  cretae tree of possible answers with the root of:"))
         for row in root.board:
             print(row)
 
-        results = run_pipeline(puzzle, sqaures, root, 3, 1, ui)
+        results = run_pipeline(puzzle, sqaures, root, 3, 3, i)
         root = results[0]
 
     trace_node = results[0]
