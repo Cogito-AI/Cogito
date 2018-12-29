@@ -1,0 +1,48 @@
+{
+    "questions": [
+        "1-  Final opponent, in video games",
+        "5-  Dusty room, typically",
+        "7- \"Take it easy, dude\"",
+        "8-  Convention nametag word",
+        "9-  Take a breather",
+        "1-  Composer described as \"the original father of harmony\"",
+        "2-  Last choice on a questionnaire, often",
+        "3-  Subway feature",
+        "4-  Places for houseplants",
+        "6-  Coagulate"
+    ],
+    "rects": [
+        "","","","",null,
+        "","","","","",
+        "","","","","",
+        "","","","","",
+        null,"","","",""
+    ],
+    "solutions": [
+        "B",
+        "O",
+        "S",
+        "S",
+        null,
+        "A",
+        "T",
+        "T",
+        "I",
+        "C",
+        "C",
+        "H",
+        "I",
+        "L",
+        "L",
+        "H",
+        "E",
+        "L",
+        "L",
+        "O",
+        null,
+        "R",
+        "E",
+        "S",
+        "T"
+    ]
+}
