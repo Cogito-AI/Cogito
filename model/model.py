@@ -68,9 +68,6 @@ def preprocess(puzzle):
 
 # connect to apı
 api = datamuse.Datamuse()
-#puzzle = saveAndRead.readFromFile(datetime.today().strftime("%B-%d-%Y"))
-#puzzle = saveAndRead.readFromFile('October-03-2018')
-
 
 def initialize_env_variables(puzzle, board):
     # create board
@@ -184,7 +181,7 @@ def solve(puzzle, ui):
     root = Node(board,0,None)
 
     results = []
-    for i in range(1):
+    for i in range(2):
 
         print(datetime.today().strftime("%H:%M:%S.%f  cretae tree of possible answers with the root of:"))
         for row in root.board:
